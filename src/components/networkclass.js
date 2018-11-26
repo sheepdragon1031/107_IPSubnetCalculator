@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 class NetworkClass extends Component {
+  setClass = (e) =>{
+    this.props.setState(e.target.value)
+  }
   render() {
+    const netWorkClass = ['Any','A','B','C']
     return (
-        <div>
-          Network Class
-          <select>
-             <option>A</option>
-             <option>B</option>
-             <option>C</option>
+        <div className="components" key="netWorkClass">
+          <span className="title">Network Class</span>
+          <select onChange={this.setClass}>
+            {netWorkClass.map((element,index)=>(
+              <option key={element.toString()}>{element}</option>
+            ))}
           </select>
         </div>
       )
