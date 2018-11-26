@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 class NetworkClass extends Component {
   render() {
-    return <h1>NetworkClass</h1> 
+    return (
+        <div>
+          Network Class
+          <select>
+             <option>A</option>
+             <option>B</option>
+             <option>C</option>
+          </select>
+        </div>
+      )
   }
 }
 export default NetworkClass;

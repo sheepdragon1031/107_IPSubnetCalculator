@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 class IpAddress extends Component {
   render() {
-    return <h1>IpAddress</h1> 
+    return (
+      <div> 
+        Ip Address
+        <input />
+      </div>
+    )
   }
 }
 export default IpAddress;
