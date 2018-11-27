@@ -1,5 +1,5 @@
 import React, { Component  } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 // import HetWorkClass from './components/networkclass';
 import SubNet from './components/subnet';
 import IpAddress from './components/ipaddress';
@@ -13,7 +13,8 @@ class App extends Component {
         maskIPVal: '255.255.255.255',
         // netWorkClass: 'Any',
         ipAddress: '0.0.0.0',
-        responsive : { type: 'null', responsive: null, data: { exp: 0}}
+        responsive : { type: 'null', responsive: null},
+        data: { exp: 0, online: 0}
     };
   }
   
@@ -26,35 +27,50 @@ class App extends Component {
   stateIpAddress = (val) =>{
     this.setState({ipAddress: val})
   }
- 
+  stateOnline = (val) =>{
+    // this.setState({...this.state.responsive.data, online:val})
+  }
   render() {
-    let resetResponsive = () =>{
-      responsive.data.exp = 0
-      responsive.type = 'null'
-      responsive.responsive = null
-    }
-    const responsive = this.state.responsive;
+    const responsive = this.state;
     const subnet = ['255','254','252','248','240','224','192','128','0'];
-    const justDoit = (e) =>{
-      let mask = this.state.maskIPVal.split('.')
+    let resetResponsive = () =>{
+      this.setState({responsive: { type: 'null', responsive: null},data:{ exp: 0, online: 0}})
+    }
+    let justDoit = (e) =>{
       resetResponsive()
+      let mask = this.state.maskIPVal.split('.')
       mask.forEach((val,index)=>{
         if(subnet.indexOf(val) === -1){
-          responsive.responsive = '網路遮罩格式錯誤，請依照指定計算數值填寫'
-          responsive.type = 'error'
+          this.setState({responsive: { 
+            type: 'error',
+            responsive: '網路遮罩格式錯誤，請依照指定計算數值填寫'
+          }})
         }
-        if(index !== 3){
-          responsive.responsive = '網路遮罩格式錯誤，請依照指定數值填寫長度'
-          responsive.type = 'error'
+        
+        if(index > 3 && index < 0){
+          this.setState({responsive: { 
+            type: 'error',
+            responsive: '網路遮罩格式錯誤，請依照指定數值填寫長度'
+          }})
         }
-        responsive.data.exp += subnet.indexOf(val)
+       
+        this.setState(prevState => ({
+          data:{
+            exp:  prevState.data.exp +  subnet.indexOf(val),
+            online: 0
+          }
+         }));
       })
-      console.log('???');
-    }
-    this.setState.PropTypes = {
-      maskIPVal: PropTypes.string.isRequired,
-      netWorkClass: PropTypes.string.isRequired,
-      ipAddress: PropTypes.string.isRequired,
+      if(Math.pow(2, responsive.data.exp) - 2 >= 0){
+        this.setState(prevState => ({
+          data:{
+            exp:  prevState.data.exp,
+            online: (Math.pow(2, prevState.data.exp) - 2)
+          }
+         }));
+      }
+
+      
     }
     return (
       <div className="App" key="App">
@@ -64,7 +80,7 @@ class App extends Component {
         <div className="components">
           <input type="button" value="Just do it!" onClick={justDoit}></input>
         </div>
-        <Reply getState={this.state.responsive}/>
+        <Reply setState={this.stateOnline} getState={this.state} wait="500"/>
       </div>
     )
   }

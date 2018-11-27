@@ -1,20 +1,40 @@
 
 import React, { Component } from 'react';
 class reply extends Component {
+  // componentWillMount = ()=>{
+  //   let the = this;
+  //   setTimeout(()=>{
+  //     console.log(the)
+  //   },the.props.wait)
+  // }
+  componentWillReceiveProps(newProps) {
+    // let data = this.props.getState.responsive
+    // console.log(data,newProps.getState)
+    // if(newProps.getState.responsive.online !== data.online){
+      
+    // .setState({...this.state.responsive.data, online: online})
+    // }
+  }
+  setOnline = (e) =>{
+    console.log(e);
+    // console.log(e)
+    // this.props.setState = e
+  }
   render() {
-    const getState = this.props.getState;
-    let type
-    let responsive
-    if(getState.type != 'null')
-      type = <span>{getState.type}</span>
-    if(getState.responsive)
-      responsive = <span>{getState.responsive}</span>
-
+    const setState = this.props.getState;
+    let type = ''
+    let responsive = ''
+    let onLine = ''
+    if(setState.type !== 'null')
+      type = <span>{setState.responsive.type}</span>
+    if(setState.responsive !== null)
+      responsive = <span>{setState.responsive.responsive}</span>
+    onLine = <span>可使用的IP數量{setState.data.online}個</span>
     return (
         <div className="components" key="reply">
-          <span>{type}</span>
-          <span>{responsive}</span>
-          <span>可用IP數量{Math.pow(2, getState.data.exp)}個</span>
+          {type}
+          {responsive}
+          {onLine}
         </div>    
       )
   }
