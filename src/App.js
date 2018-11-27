@@ -17,21 +17,23 @@ class App extends Component {
         data: { exp: 0, online: 0}
     };
   }
-  
-  // stateHetWorkClass = (val) =>{
-  //   this.setState({netWorkClass: val})
-  // }
+  componentDidUpdate(prevProps){
+    // if(this.props !== prevProps){
+    //   this.fetchData(this.props);
+    // }
+    console.log(this.state.data)
+    // this.state.data
+  }
   stateSubNet = (val) =>{
     this.setState({maskIPVal: val})
   }
   stateIpAddress = (val) =>{
     this.setState({ipAddress: val})
   }
-  stateOnline = (val) =>{
-    // this.setState({...this.state.responsive.data, online:val})
-  }
+  // stateOnline = (val) =>{
+  //   setState={this.stateOnline}
+  // }
   render() {
-    const responsive = this.state;
     const subnet = ['255','254','252','248','240','224','192','128','0'];
     let resetResponsive = () =>{
       this.setState({responsive: { type: 'null', responsive: null},data:{ exp: 0, online: 0}})
@@ -45,6 +47,7 @@ class App extends Component {
             type: 'error',
             responsive: '網路遮罩格式錯誤，請依照指定計算數值填寫'
           }})
+
         }
         
         if(index > 3 && index < 0){
@@ -59,17 +62,14 @@ class App extends Component {
             exp:  prevState.data.exp +  subnet.indexOf(val),
             online: 0
           }
-         }));
+        }));
       })
-      if(Math.pow(2, responsive.data.exp) - 2 >= 0){
-        this.setState(prevState => ({
-          data:{
-            exp:  prevState.data.exp,
-            online: (Math.pow(2, prevState.data.exp) - 2)
-          }
-         }));
-      }
-
+      this.setState(prevState => ({
+        data:{
+          exp:  prevState.data.exp,
+          online: (Math.pow(2, prevState.data.exp) - 2) < 0 ? 0 : (Math.pow(2, prevState.data.exp) - 2)
+        }
+      }));
       
     }
     return (
@@ -80,7 +80,7 @@ class App extends Component {
         <div className="components">
           <input type="button" value="Just do it!" onClick={justDoit}></input>
         </div>
-        <Reply setState={this.stateOnline} getState={this.state} wait="500"/>
+        <Reply  getState={this.state} wait="500"/>
       </div>
     )
   }
