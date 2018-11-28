@@ -1,11 +1,9 @@
 import React, { Component  } from 'react';
-// import PropTypes from 'prop-types';
-// import HetWorkClass from './components/networkclass';
+// import HetWorkClass from './components/networkclass';//廢棄因為發現選擇class沒啥用
 import SubNet from './components/subnet';
 import IpAddress from './components/ipaddress';
 import Reply from './components/reply'
 import './App.css';
-
 class App extends Component {
   constructor(props) {
     super(props)
@@ -115,9 +113,7 @@ class App extends Component {
           if(reSubnet.indexOf(val) !== 0){
             let max = Math.pow(2, reSubnet.indexOf(val))
               if(val !== '255'){
-                
                   casePrint(max, index)
-                
                 }
               else{
                 if(!isRepeat){
@@ -125,7 +121,6 @@ class App extends Component {
                     casePrints(index)  
                   }
                 }
-                
               }
            }
       })
@@ -134,7 +129,7 @@ class App extends Component {
     return (
       <div className="App" key="App">
         {/* <HetWorkClass setState={this.stateHetWorkClass}/> */}
-        <SubNet setState={this.stateSubNet}/>
+        <SubNet setState={this.stateSubNet}  getState={this.state.maskIPVal}/>
         <IpAddress setState={this.stateIpAddress} getState={this.state.ipAddress} />
         <div className="components">
           <input type="button" value="Just do it!" onClick={justDoit}></input>
