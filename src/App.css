@@ -13,3 +13,10 @@
   display: block;
   padding: .5rem .2rem;
 }
+.tr{
+  display: flex;
+}
+.table > span , .tr > span{
+  flex: 1;
+}
+
