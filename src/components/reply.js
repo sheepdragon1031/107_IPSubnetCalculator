@@ -1,16 +1,23 @@
 
 import React, { Component } from 'react';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+const styles = theme => ({
+
+});
 class reply extends Component {
+  
   render() {
     const setState = this.props.getState;
     let type = ''
     let responsive = ''
     let onLine = ''
     if(setState.responsive.type !== 'null')
-      type = <div>{setState.responsive.type}</div>
+      type = <Typography className="title">{setState.responsive.type}</Typography>
     if(setState.responsive !== null)
-      responsive = <div>{setState.responsive.responsive}</div>
-    onLine = <div>可使用的IP數量{setState.data.online}個</div>
+      responsive = <Typography className="title">{setState.responsive.responsive}</Typography>
+    onLine = <Typography variant="subtitle1" gutterBottom className="title">Number of Usable Hosts {setState.data.online}</Typography>
     
     let max = setState.countData.data.length
     let data = Object.values(setState.countData.data)
@@ -18,33 +25,41 @@ class reply extends Component {
     for(let i = 0; i < max ; i+=2){
       let temp = data[i].split('.')
       let temps = data[i + 1].split('.')
-      temp[setState.countData.index] = temp[setState.countData.index] * 1 + 1
-      temps[setState.countData.index] =temps[setState.countData.index] * 1 - 1
+      temp[3] = temp[3] * 1 + 1
+      temps[3] =temps[3] * 1 - 1
       temp = temp.join('.')
       temps = temps.join('.')
       div.push(
-        <div className="tr" key={i.toString()}>
-          <span>{data[i]}</span>
-          <span>{temp} ~ {temps}</span>
-          <span>{data[i+1]}</span>
-        </div>
+        <Grid container key={i} className="item">
+            <Grid item xs={4} sm={4}><Typography variant="body1" gutterBottom>{data[i]}</Typography></Grid>
+            <Grid item xs={4} sm={4}><Typography variant="body1" gutterBottom>{temp} ~ {temps}</Typography></Grid>
+            <Grid item xs={4} sm={4}><Typography variant="body1" gutterBottom>{data[i+1]}</Typography></Grid>
+        </Grid>
       )
+      
     }
+    
     return (
         <div className="components" key="reply">
           {type}
           {responsive}
           {onLine}
-          <div className="tr">
-            <span>Network Address</span>
-            <span>Usable Host Rang</span>
-            <span>Broadcast Address</span>
-          </div>
-          <div className="table">
+          <Grid container className="itemBar item">
+            <Grid item xs={4} sm={4}>
+              <Typography variant="subtitle1" >Network Address</Typography>
+            </Grid>
+            <Grid item xs={4} sm={4}>
+              <Typography variant="subtitle1" >Usable Host IP Range</Typography>
+            </Grid>
+            <Grid item xs={4} sm={4}>
+              <Typography variant="subtitle1" >Broadcast Address</Typography>
+            </Grid>
+          </Grid>
+          
             {div}
-          </div>
-        </div>    
+          
+        </div>
       )
   }
 }
-export default reply;
+export default withStyles(styles)(reply);

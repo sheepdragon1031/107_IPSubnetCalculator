@@ -3,7 +3,27 @@ import React, { Component  } from 'react';
 import SubNet from './components/subnet';
 import IpAddress from './components/ipaddress';
 import Reply from './components/reply'
+import { withStyles } from '@material-ui/core/styles';
 import './App.css';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    color: theme.palette.text.secondary,
+  },
+  papers: {
+    'margin-top':  theme.spacing.unit * 2,
+    padding: theme.spacing.unit * 2,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+});
 class App extends Component {
   constructor(props) {
     super(props)
@@ -70,8 +90,14 @@ class App extends Component {
     }
     let outdata = (mask) => {
       let ip = this.state.ipAddress.split('.')
-      let tempData = { index: null , data: []};
+      let tempData = { index: null , data: []}
       let isRepeat = false
+      let saveData = () =>{
+        this.setState({
+          countData : tempData
+        })
+      }
+      saveData()
       let casePrint = (max, val) => {
         tempData['index'] = val
         let expNumber = Math.pow(2, this.state.data.exp % 8)
@@ -93,23 +119,28 @@ class App extends Component {
         saveData()
       }
       let casePrints = ( val) => {
-        tempData['index'] = val
-        let startVal = `${ val === 0 ? 0 : ip[0]}`
-        let endVal = `${val === 0 ? 255 : ip[1]}`
+        tempData['index'] = val + 1
+        let startVal = ip[0]
+        let endVal = ip[0]
         for(let i = 1 ; i < 4 ; i++){
           startVal +=  `.${ i > val ? 0 : ip[i]}`
           endVal +=  `.${ i > val ? 255 : ip[i]}`
         }
         tempData['data'].push(startVal)
         tempData['data'].push(endVal)
+        
         saveData()
       }
-      let saveData = () =>{
-        this.setState({
-          countData : tempData
-        })
+      
+     
+      //
+      if(this.state.data.online === 0){
+        tempData['data'] = []
+        saveData()
       }
-      mask.forEach((val,index)=>{
+      else{
+
+        mask.forEach((val,index)=>{
           if(reSubnet.indexOf(val) !== 0){
             let max = Math.pow(2, reSubnet.indexOf(val))
               if(val !== '255'){
@@ -122,22 +153,31 @@ class App extends Component {
                   }
                 }
               }
-           }
-      })
-      //
+            }
+        })
+      }
     }
+    const { classes } = this.props;
+
     return (
-      <div className="App" key="App">
-        {/* <HetWorkClass setState={this.stateHetWorkClass}/> */}
-        <SubNet setState={this.stateSubNet}  getState={this.state.maskIPVal}/>
-        <IpAddress setState={this.stateIpAddress} getState={this.state.ipAddress} />
-        <div className="components">
-          <input type="button" value="Just do it!" onClick={justDoit}></input>
-        </div>
-        <Reply  getState={this.state} wait="500"/>
+      <div className={classes.root} key="App">
+        <Grid container spacing={32}>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                  <SubNet setState={this.stateSubNet}  getState={this.state.maskIPVal}/>
+                  <IpAddress setState={this.stateIpAddress} getState={this.state.ipAddress} />
+                  <div className="components">
+                    <Button onClick={justDoit} color="primary" variant="contained">Just do it!</Button>
+                  </div>
+              </Paper>
+              <Paper className={classes.papers}>
+                <Reply  getState={this.state} wait="500"/>
+              </Paper>
+            </Grid>  
+        </Grid>
       </div>
     )
   }
 }
 
-export default App;
+export default withStyles(styles)(App);

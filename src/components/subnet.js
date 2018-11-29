@@ -139,7 +139,7 @@ class SubNet extends Component {
     // const subnetVal  = this.props.maskIPVal;
     return (
       <div className="components" key="subNet">
-        <span className="title">SubNet</span>
+        <Typography>SubNet</Typography>
         <Select
             classes={classes}
             options={maskIP}

@@ -1,22 +1,15 @@
-.App{
-  padding: .25rem;
-  max-width: 50rem;
-  width: calc(100vw - .5rem);
-  min-width: 19.5rem;
-  margin: auto;
+body{
+  padding: 1rem;
+  background: #eeeeee;
 }
-.title, .components > span{
-  width: 100%;
-  display: block;
+.title{
+  text-align: left;
 }
 .components{
   display: block;
   padding: .5rem .2rem;
 }
-.tr{
-  display: flex;
+.item:nth-child(odd){
+  background: #eeeeee;
+  padding: .2rem;
 }
-.table > span , .tr > span{
-  flex: 1;
-}
-
